@@ -1,2 +1,5 @@
 # Backup files created by AOMrescale.py when it rescales a calibration file
 *.bak
+
+# macOS Finder metadata
+.DS_Store

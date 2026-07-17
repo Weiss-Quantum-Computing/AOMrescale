@@ -33,6 +33,15 @@ def readfile(filename):
     file.close()
     return x, y
 
+def format_logvalue(value):
+    # Format a value for the log with one decimal place, adding more places
+    # only if they are needed to represent the value exactly (capped at 6).
+    for prec in xrange(1, 7):
+        s = "%.*f" % (prec, value)
+        if float(s) == value:
+            return s
+    return "%.6f" % value
+
 class App:
     def __init__(self,master):
         self.master = master
@@ -272,7 +281,7 @@ class App:
             w = csv.writer(fh,delimiter='\t')
             if need_header:
                 w.writerow(header)
-            row = [datetime.datetime.now()]
+            row = [datetime.datetime.now().strftime("%Y%m%d %H:%M:%S")]
             for i in xrange(self.Number):
                 try:
                     value = float(self.newvaluetext[i].get())
@@ -280,7 +289,7 @@ class App:
                     row.append('')
                 else:
                     if self.enableFileValue[i].get():
-                        row.append("%f" % value)
+                        row.append(format_logvalue(value))
                     else: # shouldn't happen, but just in case
                         row.append('')
             w.writerow(row)
